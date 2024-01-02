@@ -19,7 +19,7 @@ $array = [
 $host     = 'localhost'; // Because MySQL is running on the same computer as the web server
 $database = 'php_connect'; // Name of the database you use (you need first to CREATE DATABASE in MySQL)
 $user     = 'root'; // Default username to connect to MySQL is root
-$password = 'mysql'; // Default password to connect to MySQL is empty
+$password = 'null'; // Default password to connect to MySQL is empty
 
 // TO DO: CREATE CONNECTION TO DATABASE
 // Read file: https://www.w3schools.com/php/php_mysql_connect.asp
@@ -87,6 +87,31 @@ endforeach;
     </div>
 </form>
 
+
+
 <?php
 require_once 'templates/footer.php';
+?>
+
+Username: <input type="text" name="username">
+Password: <input type="password" name="password">
+<input type="submit" value="Đăng nhập">
+
+<?php 
+
+$stmt = $conn->prepare('INSERT INTO users (name, email, age) values (?, ?, ?)');
+$stmt = $conn->prepare('INSERT INTO users (name, email, age) values (:name, :mail, :age)');
+
+//Tạo Prepared Statement
+$query = $db->prepare('INSERT INTO users (username, email) VALUES (:username, :email)');
+
+// Gán giá trị cho các placeholder
+$username = 'john.doe';
+$email = 'john.doe@example.com';
+$query->bindParam(':username', $username);
+$query->bindParam(':email', $email);
+
+// Thực thi truy vấn
+$query->execute();
+$result = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
